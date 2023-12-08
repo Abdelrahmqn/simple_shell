@@ -11,8 +11,8 @@
 #include <sys/stat.h>
 
 int main(int argc, char *argv[], char *envp[]);
-int _strcmp(char str1, char str2);
-
+int _strcmp(const char *str1, const char *str2);
+int _strcpy(char *receiver, const char *sender);
 
 
 #endif

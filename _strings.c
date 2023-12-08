@@ -34,3 +34,25 @@ else
 return (1);
 }
 }
+/**
+ * _strcpy - Copies a string from sender to right place!.
+ *
+ * @receiver: Pointer to the receiver string.
+ *
+ * @sender: Pointer to the sender string.
+ *
+ * Return: 0 on success, -1 on failure.
+ */
+
+int _strcpy(char *receiver, const char *sender)
+{
+int i = 0;
+
+while (sender[i] != '\0')
+{
+receiver[i] = sender[i];
+i++;
+}
+receiver[i] = '\0';
+return (0);
+}
