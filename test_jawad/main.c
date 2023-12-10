@@ -1,5 +1,62 @@
 #include "main.h"
+/**
+ * exec_command - Executes the command received as input.
+ *
+ *
+ * @argv: The argument vector containing the command and its arguments.
+ *
+ * Return: 0 on successful execution, -1 on failure.
+ */
+int exec_command(char **argv)
+{
+	pid_t child_pid;
+	int status;
 
+	child_pid = fork();
+	if (child_pid == 0)
+	{
+		if (execve(argv[0], argv, NULL) == -1)
+		{
+			perror("Error excuting command\n");
+			exit(EXIT_FAILURE);
+		}
+	}
+	else if (child_pid > 0)
+	{
+		waitpid(child_pid, &status, 0);
+	}
+	else
+	{
+		perror("failed to fork");
+		return (-1);
+	}
+	return (0);
+}
+/**
+ * _spliting - Function that tokenizes the command line arguments.
+ * @input_command: command to be tokenized.
+ * @argv: the command line arguments.
+ * Return: number of arguments.
+ */
+int _spliting(char *input_command, char **argv)
+{
+	int num_of_args = 0;
+	char *to_tokenize;
+
+	to_tokenize = strtok(input_command, " \n");
+	while (to_tokenize != NULL && num_of_args < LIM_ARGS - 1)
+	{
+		argv[num_of_args] = to_tokenize;
+		to_tokenize = strtok(NULL, " \n");
+		num_of_args++;
+	}
+	argv[num_of_args] = NULL;
+
+	if (num_of_args == 0)
+		return (-1);
+
+	return (num_of_args);
+}
 /**
  * main - Entry point for the shell program.
  * @argc: Number of arguments passed to program.
@@ -11,78 +68,44 @@
 int main(int argc, char *argv[], char *envp[])
 {
 	size_t var = 0;
-	/* char **args; */
 	ssize_t get_command;
-	char *command = NULL, *cp_command = NULL;
-	char *token;
-	int num_of_args = 0;
-	int i;
-
-	(void)argc, (void)argv, (void)envp;
+	char *command;
+	int no_of_argument;
+	/*int i;*/
+	(void)argc;
+	(void)envp;
 
 	while (1)
 	{
 		write(1, "$ ", 2);
+		command = NULL;
 		get_command = getline(&command, &var, stdin);
 		if (get_command == -1)
 		{
-		perror("exiting the shell\n");
-		return (1);
+			free(command);
+			perror("exiting the shell\n");
+			return (1);
 		}
-	cp_command = malloc(sizeof(char) * get_command);
 
-	/* check for allocation memory */
-	if (cp_command == NULL)
-	{
-		perror("Allocation Memory Failed");
-		return (-1);
-	}
-
-	/*copy the command */
-	strcpy(cp_command, command);
-
-	/* get the number of argument */
-
-	token = strtok(cp_command, " \n");
-	while (token != NULL)
-	{
-		token = strtok(NULL, " \n");
-		num_of_args++;
-	}
-	num_of_args++;
-
-	/* allocation memory for argv */
-	argv = malloc(sizeof(char *) * num_of_args);
-	if (argv == NULL)
-	{
-		perror("Allocation Memory Failed");
-		return (-1);
-	}
-
-	token = strtok(command, " \n");
-	for (i = 0; token != NULL; i++)
-	{
-		argv[i] = malloc(sizeof(char) * strlen(token));
-		if (argv[i] == NULL)
+		if (_strcmp(command, "exit\n") == 0)
 		{
-			perror("Allocation Memory Failed");
-			return (-1);
+			write(1, "Exiting the shell...\n", 22);
+			break;
 		}
+	no_of_argument = _spliting(command, argv);
 
-		strcpy(argv[i], token);
-		/* just to check the results  */
-		/*printf(" %s \n", argv[i]);*/
+	if (no_of_argument != -1) 
+	{
+		exec_command(argv);
+	}	
 
-		token = strtok(NULL, " \n");
-	}
-
-	exec_command(argv);
-
-	}
-	free(argv);
-	free(cp_command);
+	/*for (i = 0; i < no_of_argument-1; i++)
+	
+		free(argv[i]);
+	*/
+	/*free(argv);*/
 	free(command);
-
-
+	
+	}
 	return (0);
 }
