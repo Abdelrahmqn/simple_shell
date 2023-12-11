@@ -18,7 +18,7 @@ int exec_command(char **argv)
 		if (execve(argv[0], argv, NULL) == -1)
 		{
 			perror("Error excuting command\n");
-			exit(EXIT_FAILURE);
+			return(-1);
 		}
 	}
 	else if (child_pid > 0)
@@ -90,20 +90,26 @@ int main(int argc, char *argv[], char *envp[])
 		if (_strcmp(command, "exit\n") == 0)
 		{
 			write(1, "Exiting the shell...\n", 22);
+			free(command);
 			break;
 		}
+
 	no_of_argument = _spliting(command, argv);
 
 	if (no_of_argument != -1) 
 	{
-		exec_command(argv);
+		if (exec_command(argv) == -1)
+		{
+			free(command);
+			exit(EXIT_FAILURE);
+		}
 	}	
 
 	/*for (i = 0; i < no_of_argument-1; i++)
 	
 		free(argv[i]);
 	*/
-	/*free(argv);*/
+
 	free(command);
 	
 	}
