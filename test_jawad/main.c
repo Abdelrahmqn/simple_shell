@@ -67,11 +67,11 @@ int _spliting(char *input_command, char **argv)
 
 int main(int argc, char *argv[], char *envp[])
 {
-	size_t var = 0;
+	size_t var;
 	ssize_t get_command;
 	char *command;
 	int no_of_argument;
-	/*int i;*/
+	/* int i; */
 	(void)argc;
 	(void)envp;
 
@@ -79,6 +79,7 @@ int main(int argc, char *argv[], char *envp[])
 	{
 		write(1, "$ ", 2);
 		command = NULL;
+		var = 0;
 		get_command = getline(&command, &var, stdin);
 		if (get_command == -1)
 		{
@@ -100,7 +101,12 @@ int main(int argc, char *argv[], char *envp[])
 	{
 		if (exec_command(argv) == -1)
 		{
+			perror("Ecuction failed");
 			free(command);
+			/*for (i = 0; i < no_of_argument; i++)
+			{
+				free(argv[i]);
+			}*/
 			exit(EXIT_FAILURE);
 		}
 	}	
@@ -109,8 +115,9 @@ int main(int argc, char *argv[], char *envp[])
 	
 		free(argv[i]);
 	*/
-
+	
 	free(command);
+
 	
 	}
 	return (0);
