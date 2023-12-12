@@ -9,17 +9,16 @@
  */
 int exec_command(char **argv)
 {
+	
 	pid_t child_pid;
 	int status;
 
 	child_pid = fork();
 	if (child_pid == 0)
 	{
-		if (execve(argv[0], argv, NULL) == -1)
-		{
-			perror("Error excuting command\n");
-			return (-1);
-		}
+		execve(full_path(argv[0]), argv, NULL);
+		perror("Error excuting command\n");
+		exit(EXIT_FAILURE);
 	}
 	else if (child_pid > 0)
 	{
@@ -77,6 +76,9 @@ int main(int argc, char *argv[], char *envp[])
 	while (1)
 	{
 		write(1, "$ ", 2);
+
+		/* printf("%s",full_path("pwd")); */
+
 		command = NULL;
 		var = 0;
 		get_command = getline(&command, &var, stdin);
@@ -96,12 +98,12 @@ int main(int argc, char *argv[], char *envp[])
 
 	if (no_of_argument != -1)
 	{
-		if (exec_command(argv) == -1)
-		{
-			perror("Ecuction failed");
+		exec_command(argv);
+		/*{
+			perror("Excution failed check exec_command");
 			free(command);
 			exit(EXIT_FAILURE);
-		}
+		}*/
 	}
 
 	free(command);

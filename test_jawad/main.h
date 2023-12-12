@@ -19,5 +19,11 @@ int exec_command(char **argv);
 void _env_variables(char **envp);
 size_t _strlen(char *str);
 
+char *_getenv(const char *environ_var);
+
+char *full_path(char *command);
+
+
+
 
 #endif

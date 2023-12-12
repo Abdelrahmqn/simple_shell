@@ -13,6 +13,6 @@ void _env_variables(char **envp)
 	for (i = 0; envp[i] != NULL; i++)
 	{
 		print_env = envp[i];
-		write(1, &print_env, 1);
+		write(1, &print_env, _strlen(print_env));
 	}
 }
