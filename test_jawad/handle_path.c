@@ -29,6 +29,12 @@ char *full_path(char *command)
 	while (token)
 	{
 		full_command = malloc(strlen(command) + strlen(token) + 2);
+		if (full_command == NULL)
+		{
+			perror("Mmeory allocation failed");
+			return (NULL);
+		}
+
 		strcpy(full_command, token);
 		strcat(full_command, "/");
 		strcat(full_command, command);

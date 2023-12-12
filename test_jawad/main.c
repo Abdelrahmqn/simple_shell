@@ -12,13 +12,23 @@ int exec_command(char **argv)
 	
 	pid_t child_pid;
 	int status;
+	char *path;
 
 	child_pid = fork();
 	if (child_pid == 0)
 	{
-		execve(full_path(argv[0]), argv, NULL);
-		perror("Error excuting command\n");
-		exit(EXIT_FAILURE);
+		path = full_path(argv[0]);
+		if (path == NULL)
+		{
+			perror("path null");
+			return (-1);
+		}
+		else
+		{
+			execve(path, argv, NULL);
+			perror("Error excuting command\n");
+			exit(EXIT_FAILURE);
+		}
 	}
 	else if (child_pid > 0)
 	{
@@ -98,12 +108,12 @@ int main(int argc, char *argv[], char *envp[])
 
 	if (no_of_argument != -1)
 	{
-		exec_command(argv);
-		/*{
+		if (exec_command(argv) == -1)
+		{
 			perror("Excution failed check exec_command");
 			free(command);
 			exit(EXIT_FAILURE);
-		}*/
+		}
 	}
 
 	free(command);
