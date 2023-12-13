@@ -25,17 +25,13 @@ int exec_command(char **argv)
 	{
 		perror("fork failed");
 		free(path);
-		return (-1);
 	}
-
-	if (child_pid == 0)
-	{
 		if (execve(path, argv, NULL) == -1)
 		{
 			free(path);
+			perror("Error command not found");
 			return (-1);
 		}
-	}
 	else
 	{
 		free(path);
@@ -76,14 +72,14 @@ int _spliting(char *input_command, char **argv)
  * Return: 0 on successful execution, -1 on failure.
  */
 
-int main(int argc, char *argv[])
+int main(int argc, char *argv[], char *envp[])
 {
 	size_t var = 0;
 	ssize_t get_command;
 	char *command;
 	int tokens;
-	char *err;
 	(void)argc;
+	(void)envp;
 
 	while (1)
 	{
@@ -108,8 +104,9 @@ int main(int argc, char *argv[])
 	{
 		if (exec_command(argv) == -1)
 		{
-			err = "Error: Command not found\n";
-			write(1, &err, 1);
+		perror("execution failed");
+		free(command);
+		exit(EXIT_FAILURE);
 		}
 	}
 
