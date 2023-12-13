@@ -15,19 +15,21 @@ int exec_command(char **argv)
 	child_pid = fork();
 	if (child_pid == 0)
 	{
-		execve(argv[0], argv, NULL);
-		perror("Error excuting command\n");
-		exit(EXIT_FAILURE);
-	}
-		else if (child_pid > 0)
+		if (execve(argv[0], argv, NULL) == -1)
 		{
-			waitpid(child_pid, &status, 0);
-		}
-		else
-		{
-			perror("failed");
+			perror("Error command not found");
 			return (-1);
 		}
+	}
+	else if (child_pid > 0)
+	{
+		waitpid(child_pid, &status, 0);
+	}
+	else
+	{
+		perror("failed");
+		return (-1);
+	}
 	return (0);
 }
 /**
@@ -49,6 +51,10 @@ int _spliting(char *input_command, char **argv)
 		num_of_args++;
 	}
 	argv[num_of_args] = NULL;
+
+	if (num_of_args >= LIM_ARGS - 1)
+		return (-1);
+
 	return (num_of_args);
 }
 /**
@@ -63,17 +69,19 @@ int main(int argc, char *argv[], char *envp[])
 {
 	size_t var = 0;
 	ssize_t get_command;
-	char *command = NULL;
-
+	char *command;
+	int tokens;
 	(void)argc;
 	(void)envp;
 
 	while (1)
 	{
 		write(1, "$ ", 2);
+		command = NULL;
 		get_command = getline(&command, &var, stdin);
 		if (get_command == -1)
 		{
+		free(command);
 		perror("exiting the shell\n");
 		return (1);
 		}
@@ -81,10 +89,20 @@ int main(int argc, char *argv[], char *envp[])
 		if (_strcmp(command, "exit\n") == 0)
 		{
 			write(1, "Exiting the shell...\n", 22);
+			free(command);
 			break;
 		}
-	_spliting(command, argv);
-	exec_command(argv);
+	tokens = _spliting(command, argv);
+	if (tokens != -1)
+	{
+		if (exec_command(argv) == -1)
+		{
+		perror("execution failed");
+		free(command);
+		exit(EXIT_FAILURE);
+		}
+	}
+
 	free(command);
 	}
 	return (0);
