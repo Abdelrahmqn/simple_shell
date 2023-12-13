@@ -11,23 +11,30 @@ int exec_command(char **argv)
 {
 	pid_t child_pid;
 	int status;
+	char *path;
+
+	path = get_path(argv[0]);
+	if (path == NULL)
+	{
+		perror("failed path");
+		return (-1);
+	}
 
 	child_pid = fork();
 	if (child_pid == -1)
 	{
 		perror("fork failed");
-		return (-1);
+		free(path);
 	}
-		else if (child_pid == 0)
+		if (execve(path, argv, NULL) == -1)
 		{
-		if (execve(argv[0], argv, NULL) == -1)
-		{
+			free(path);
 			perror("Error command not found");
 			return (-1);
 		}
-	}
-	else if (child_pid > 0)
+	else
 	{
+		free(path);
 		waitpid(child_pid, &status, 0);
 	}
 	return (0);
@@ -70,6 +77,7 @@ int main(int argc, char *argv[], char *envp[])
 	size_t var = 0;
 	ssize_t get_command;
 	char *command;
+	int tokens;
 	(void)argc;
 	(void)envp;
 
@@ -82,7 +90,7 @@ int main(int argc, char *argv[], char *envp[])
 		{
 		free(command);
 		perror("exiting the shell\n");
-		return (-1);
+		return (1);
 		}
 
 		if (_strcmp(command, "exit\n") == 0)
@@ -91,13 +99,14 @@ int main(int argc, char *argv[], char *envp[])
 			free(command);
 			break;
 		}
-	if (_spliting(command, argv) != -1)
+	tokens = _spliting(command, argv);
+	if (tokens != -1)
 	{
 		if (exec_command(argv) == -1)
 		{
 		perror("execution failed");
 		free(command);
-		return (1);
+		exit(EXIT_FAILURE);
 		}
 	}
 

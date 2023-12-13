@@ -11,6 +11,8 @@
 #include <sys/stat.h>
 #include <sys/wait.h>
 
+extern char **environ;
+
 int main(int argc, char *argv[], char *envp[]);
 int _strcmp(const char *str1, const char *str2);
 int _strcpy(char *receiver, const char *sender);
