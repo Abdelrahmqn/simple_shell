@@ -5,19 +5,25 @@ char *_getenv(const char *environ_var)
 {
 	extern char **environ;
 	int index = 0;
-	char *token, *tmp = NULL, *value;
+	char *token, *tmp, *value, *path;
 
 	for (index = 0; environ[index]; index++) 
 	{
 		tmp = strdup(environ[index]);
 		token = strtok(tmp,"=");
 
-		if (strcmp(environ_var, token) == 0)
-			return (strtok(NULL, "\n"));
+		if (strcmp(token, environ_var) == 0)
+		{
+			value = strtok(NULL, "\n");
+			path = strdup(value);
+			free(tmp);
+			return (path);
+		}
+		free(tmp), tmp = NULL;
 	}
+	free(tmp);
 	return (NULL);
 }
-
 
 char *_getpath(const char *command)
 {
@@ -25,8 +31,22 @@ char *_getpath(const char *command)
 	char *token;
 	char *cmd_full = NULL;
 	struct stat st;
+	int i;
 
+	for (i = 0; command[i]; i++)
+	{
+		if (command[i] == '/')
+		{
+			if (stat(command, &st) == 0)
+				return (strdup(command));
+			return (NULL);
+		}
+	}	
+	
 	path = _getenv("PATH");
+
+	if (path == NULL)
+		return (NULL);
 
 	token = strtok(path, ":");
 
@@ -40,12 +60,15 @@ char *_getpath(const char *command)
 		strcat(cmd_full,command);
 
 		if (stat(cmd_full, &st) == 0)
+		{
+			free(path);
 			return (cmd_full);
-		free(cmd_full);
+		}
+		free(cmd_full), cmd_full = NULL;
 		token = strtok(NULL,":");
 	}
+	free(path);
 	return (NULL);
 
 }
-
 

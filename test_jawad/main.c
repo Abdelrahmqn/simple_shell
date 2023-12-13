@@ -17,7 +17,7 @@ int exec_command(char **argv)
 	child_pid = fork();
 	if (child_pid == 0)
 	{
-		path = full_path(argv[0]);
+		path = _getpath(argv[0]);
 		if (path == NULL)
 		{
 			perror("path null");

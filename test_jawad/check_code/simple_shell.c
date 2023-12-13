@@ -1,20 +1,22 @@
 #include"main.h"
 #include<stdio.h>
 
-int main()
+int main(int argc, char **argv)
 {
-	char *command = NULL;
+	char *full_cmd;
 
-	command = malloc(10);
- 
-	for (int i = 0; i < 4; i++)
-	{
-		write(1, "$ ", 2);
-		scanf("%s",command);
-		printf("%s\n",_getpath(command));
+	(void)argc;
 
-	}
-	free(command);
+	full_cmd = _getpath(argv[1]);
+
+	if (full_cmd)
+		printf("%s\n",full_cmd);
+	else
+		printf("command not exist");
+
+	free(full_cmd);
+
+
 
 	return (0);
 }
