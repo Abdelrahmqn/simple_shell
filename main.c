@@ -33,7 +33,6 @@ int exec_command(char **argv)
 		if (execve(path, argv, NULL) == -1)
 		{
 			free(path);
-			write(1, "Error: command not found\n", 25);
 			return (-1);
 		}
 	}
@@ -64,7 +63,7 @@ int _spliting(char *input_command, char **argv)
 	}
 	argv[num_of_args] = NULL;
 
-	if (num_of_args == 0)
+	if (num_of_args >= LIM_ARGS - 1)
 		return (-1);
 
 	return (num_of_args);
@@ -77,15 +76,14 @@ int _spliting(char *input_command, char **argv)
  * Return: 0 on successful execution, -1 on failure.
  */
 
-int main(int argc, char *argv[], char *envp[])
+int main(int argc, char *argv[])
 {
 	size_t var = 0;
 	ssize_t get_command;
 	char *command;
-	char *err;
 	int tokens;
+	char *err;
 	(void)argc;
-	(void)envp;
 
 	while (1)
 	{
