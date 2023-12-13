@@ -7,9 +7,9 @@ char *_getenv(const char *environ_var)
 	int index = 0;
 	char *token, *tmp, *value, *path;
 
-	for (index = 0; environ[index]; index++)
+	for (index = 0; environ_var[index]; index++)
 	{
-		tmp = strdup(environ[index]);
+		tmp = strdup(environ_var[index]);
 		token = strtok(tmp, "=");
 
 		if (strcmp(token, environ_var) == 0)
@@ -36,10 +36,13 @@ char *_getpath(const char *command)
 
 	token = strtok(path, ":");
 
-
+	cmd_full = malloc(_strlen(token) + strlen((command) + 2));
+	if (cmd_full == NULL)
+	{
+		return (NULL);
+	}
 	while (token)
 	{
-		cmd_full = malloc(strlen(token) + strlen(command) + 2);
 
 		strcpy(cmd_full, token);
 		strcat(cmd_full, "/");

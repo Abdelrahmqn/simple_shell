@@ -9,7 +9,7 @@
  */
 int exec_command(char **argv)
 {
-	
+
 	pid_t child_pid;
 	int status;
 	char *path;
@@ -23,9 +23,8 @@ int exec_command(char **argv)
 			perror("path null");
 			return (-1);
 		}
-		else
+		if (execve(path, argv, NULL))
 		{
-			execve(path, argv, NULL);
 			perror("Error excuting command\n");
 			exit(EXIT_FAILURE);
 		}
