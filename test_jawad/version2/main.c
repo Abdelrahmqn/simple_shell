@@ -11,11 +11,11 @@
 
 int main(int argc, char **argv, char **envp)
 {
-	int retour_stat = 0, i = 0;
+	int retour_stat = 0;
 	char *line = NULL;
-	char **command = NULL;
+	char **cmd = NULL;
 	
-	(void)argc, (void)envp, (void)argv;  
+	(void)argc;  
 
 	while (1)
 	{
@@ -38,19 +38,22 @@ int main(int argc, char **argv, char **envp)
 		}
 	*/
 	
-	argv = _splitting(line); /* call function that tokenize the line */
+	cmd = _splitting(line); /* call function that tokenize the line */
 	
-	if (argv == NULL) /* check argv NULL print prompt again */
+	if (cmd == NULL) /* check argv NULL print prompt again */
 		continue;
 
-	for (i = 0; argv[i]; i++)
+	/* for (i = 0; cmd[i]; i++)  free the array 2D 
 	{
-		printf("%s\n", argv[i]);
-		_free1(argv[i]);
-	}
+		printf("%s\n", cmd[i]);
+		_free1(cmd[i]);
+	} */
 	
-	 /* free(argv), argv =NULL; */
-	_free2(argv);
+	
+	retour_stat = exec_command(cmd, argv, envp);
+	
+	
+	_free2(cmd);
 	
 	}
 	
