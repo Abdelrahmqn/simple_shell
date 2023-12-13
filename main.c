@@ -25,13 +25,18 @@ int exec_command(char **argv)
 	{
 		perror("fork failed");
 		free(path);
+		return (-1);
 	}
+
+	if (child_pid == 0)
+	{
 		if (execve(path, argv, NULL) == -1)
 		{
 			free(path);
-			perror("Error command not found");
+			write(1, "Error: command not found\n", 25);
 			return (-1);
 		}
+	}
 	else
 	{
 		free(path);
@@ -59,7 +64,7 @@ int _spliting(char *input_command, char **argv)
 	}
 	argv[num_of_args] = NULL;
 
-	if (num_of_args >= LIM_ARGS - 1)
+	if (num_of_args == 0)
 		return (-1);
 
 	return (num_of_args);
@@ -77,6 +82,7 @@ int main(int argc, char *argv[], char *envp[])
 	size_t var = 0;
 	ssize_t get_command;
 	char *command;
+	char *err;
 	int tokens;
 	(void)argc;
 	(void)envp;
@@ -104,9 +110,8 @@ int main(int argc, char *argv[], char *envp[])
 	{
 		if (exec_command(argv) == -1)
 		{
-		perror("execution failed");
-		free(command);
-		exit(EXIT_FAILURE);
+			err = "Error: Command not found\n";
+			write(1, &err, 1);
 		}
 	}
 

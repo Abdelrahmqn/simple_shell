@@ -8,7 +8,6 @@
 
 char *_getenv(const char *environ_var)
 {
-	/*extern char **environ;*/
 	int i = 0;
 	char *token, *temp, *value, *path;
 
@@ -44,7 +43,6 @@ char *get_path(const char *command)
 	token = strtok(path, ":");
 	while (token)
 	{
-		sum_path = NULL;
 	sum_path = malloc(strlen(token) + strlen(command) + 2);
 	if (sum_path == NULL)
 	{
@@ -61,10 +59,11 @@ char *get_path(const char *command)
 			free(path);
 			return (sum_path);
 		}
-
+		free(sum_path);
 		sum_path = NULL;
 		token = strtok(NULL, ":");
 	}
+
 	free(path);
 	return (NULL);
 }
