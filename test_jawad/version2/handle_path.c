@@ -22,8 +22,16 @@ char *full_path(char *command)
 	char *path = _getenv("PATH");
 	char *token;
 	char *full_command = NULL;
+	int i = 0;
 	struct stat status;
-
+	
+	while (command[i])
+	{
+		if (command[i] == '/')
+			return(command);
+		i++;
+	}	
+	
 	token = strtok(path, ":");
 
 	while (token)

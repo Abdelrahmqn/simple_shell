@@ -22,7 +22,7 @@ int exec_command(char **cmd, char **argv, char **envp)
 		if (path == NULL)
 		{
 			perror("path null");
-			/* _free2(cmd); */
+			 _free3(cmd);
 			exit(0);
 		}
 		else
@@ -37,12 +37,12 @@ int exec_command(char **cmd, char **argv, char **envp)
 	else if (child_pid > 0)
 	{
 		waitpid(child_pid, &status, 0);
-		/* _free2(cmd); */
+		/* _free3(cmd); */ 
 	}
 	else
 	{
 		perror("failed to fork");
-		/* _free2(cmd); */
+		_free3(cmd);
 		exit(0);
 	}
 	return (WEXITSTATUS(status));
