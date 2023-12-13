@@ -21,7 +21,7 @@ int exec_command(char **cmd, char **argv, char **envp)
 		path = full_path(cmd[0]);
 		if (path == NULL)
 		{
-			perror("path null");
+			perror(argv[0]);
 			 _free3(cmd);
 			exit(0);
 		}
@@ -34,11 +34,7 @@ int exec_command(char **cmd, char **argv, char **envp)
 			}
 		}
 	}
-	else if (child_pid > 0)
-	{
-		waitpid(child_pid, &status, 0);
-		/* _free3(cmd); */ 
-	}
+
 	else
 	{
 		perror("failed to fork");
