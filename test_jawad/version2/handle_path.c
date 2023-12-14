@@ -1,14 +1,19 @@
 #include"main.h"
-
+/**
+ * _getenv - the get environment functions.
+ *
+ * @environ_var: the name of the environment.
+ *
+ * Return: On success: the dest. On failure: NULL.
+ */
 char *_getenv(const char *environ_var)
 {
-	extern char **environ;
 	int index = 0;
 	char *token;
 
 	while (environ[index])
 	{
-		token = strtok(environ[index],"=");
+		token = strtok(environ[index], "=");
 		if (strcmp(environ_var, token) == 0)
 			return (strtok(NULL, "\n"));
 		index++;
@@ -17,6 +22,13 @@ char *_getenv(const char *environ_var)
 }
 
 
+/**
+ * full_path - function that call getenv and return full path
+ *
+ * @command: command line variable.
+ *
+ * Return: On success: the dest. On failure: NULL.
+ */
 char *full_path(char *command)
 {
 	char *path = _getenv("PATH");
@@ -24,15 +36,14 @@ char *full_path(char *command)
 	char *full_command = NULL;
 	int i = 0;
 	struct stat status;
-	
+
 	while (command[i])
 	{
 		if (command[i] == '/')
-			return(command);
+		return (command);
 		i++;
-	}	
-	
-	token = strtok(path, ":");
+	}
+token = strtok(path, ":");
 
 	while (token)
 	{

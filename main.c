@@ -35,7 +35,9 @@ int main(int argc, char **argv, char **envp)
 
 
 	retour_stat = exec_command(cmd, argv, envp);
-	_free2(cmd);
+	
+	_free3(cmd);
+
 	}
 	return (0);
 }

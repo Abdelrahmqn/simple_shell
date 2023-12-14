@@ -19,43 +19,23 @@ int main(int argc, char **argv, char **envp)
 
 	while (1)
 	{
-		if (isatty(STDIN_FILENO) == 1) /* check if the termianl */
-			write(1, "$ ", 2);  /* prompt */
+		if (isatty(STDIN_FILENO) == 1)
+			write(1, "$ ", 2);
 
-		line = _readinput(); /* call the function that take input from user */
+		line = _readinput();
 
-		if (line == NULL) /* check the output of the function */
+		if (line == NULL)
 		{
-			return (retour_stat); /* return 0 */
+			return (retour_stat);
 		}
+	cmd = _splitting(line);
 
-
-		/* if (_strcmp(line, "exit\n") == 0)
-		{
-			write(1, "Exiting the shell...\n", 22);
-			free(line);
-			break;
-		}
-	*/
-
-	cmd = _splitting(line); /* call function that tokenize the line */
-
-	if (cmd == NULL) /* check argv NULL print prompt again */
+	if (cmd == NULL)
 		continue;
-
-	/* for (i = 0; cmd[i]; i++)  free the array 2D
-	{
-		printf("%s\n", cmd[i]);
-		_free1(cmd[i]);
-	} */
 
 
 	retour_stat = exec_command(cmd, argv, envp);
-
-
-	_free2(cmd);
-
+	_free3(cmd);
 	}
-
 	return (0);
 }

@@ -1,9 +1,11 @@
 #include"main.h"
 /**
- * _readinput - function that read the line input.
+ * _readinput - Reads input from the command line
+ * Description: This function reads the command line input.
  *
- * return: line.
-*/
+ * Return: On success: Pointer to the string. On failure: NULL.
+ */
+
 char *_readinput(void)
 {
 	char *line = NULL;

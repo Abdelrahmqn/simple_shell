@@ -40,7 +40,7 @@ void _free3(char **variable3)
 	if (variable3 == NULL)
 		return;
 	for (i = 0; variable3[i]; i++)
-		_free1(variable3[i]);
+		free(variable3[i]), variable3[i] = NULL;
 
-	_free2(variable3);
+	free(variable3), variable3 = NULL;
 }
