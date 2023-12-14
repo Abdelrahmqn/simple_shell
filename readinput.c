@@ -17,7 +17,7 @@ char *_readinput(void)
 
 	if (nread == -1)
 	{
-		free(line);
+		free(line), line = NULL;
 		return (NULL);
 	}
 	return (line);
