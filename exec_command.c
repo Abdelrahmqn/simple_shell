@@ -27,7 +27,7 @@ int exec_command(char **cmd, char **argv, char **envp)
 		path = full_path(cmd[0]);
 		if (path == NULL)
 		{
-			perror("FULL RESOLUTION FAILED");
+			perror(argv[0]);
 			exit(EXIT_FAILURE);
 		}
 			if (execve(path, cmd, envp) == -1)
