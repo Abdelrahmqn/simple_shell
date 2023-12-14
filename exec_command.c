@@ -10,10 +10,9 @@
  */
 int exec_command(char **cmd, char **argv, char **envp)
 {
-
-	pid_t child_pid;
-	int status;
+	int stat = 255;
 	char *path;
+	pid_t child_pid;
 
 	child_pid = fork();
 	if (child_pid == -1)
@@ -38,10 +37,10 @@ int exec_command(char **cmd, char **argv, char **envp)
 	}
 	else
 	{
-		waitpid(child_pid, &status, 0);
-		if (WEXITSTATUS(status))
+		waitpid(child_pid, &stat, 0);
+		if (WEXITSTATUS(stat))
 		{
-			return (WEXITSTATUS(status));
+			return (WEXITSTATUS(stat));
 		}
 			else
 			{
