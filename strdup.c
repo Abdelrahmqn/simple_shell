@@ -6,6 +6,7 @@
  *
  * Return: On success: the dest. On failure: NULL.
  */
+
 char *_strdup(const char *str)
 {
 size_t index, len = 0;

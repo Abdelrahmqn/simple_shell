@@ -1,7 +1,7 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#define LIM_ARGS 100
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,15 +12,34 @@
 #include <sys/wait.h>
 
 extern char **environ;
-int main(int argc, char *argv[]);
+#define LIM_ARGS 100
+#define DELIM " \t\n"
+
+int main(int argc, char **argv, char **envp);
+char *_readinput(void);
+
+char **_splitting(char *line);
+
+void _free1(char *variable);
+void _free2(char **variable);
+void _free3(char **variable3);
+
+int exec_command(char **cmd, char **argv, char **envp);
+
 int _strcmp(const char *str1, const char *str2);
 int _strcpy(char *receiver, const char *sender);
-int _spliting(char *input_command, char **argv);
-int exec_command(char **argv);
+
+char *_strdup(const char *str);
+
+
 void _env_variables(char **envp);
 size_t _strlen(char *str);
-char *_strdup(const char *str);
-char *get_path(const char *command);
+
 char *_getenv(const char *environ_var);
+
+char *full_path(char *command);
+
+
+
 
 #endif

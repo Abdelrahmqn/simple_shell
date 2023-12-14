@@ -9,33 +9,34 @@
  */
 int exec_command(char **argv)
 {
+
 	pid_t child_pid;
 	int status;
 	char *path;
 
-	path = get_path(argv[0]);
-	if (path == NULL)
-	{
-		perror("failed path");
-		return (-1);
-	}
-
 	child_pid = fork();
-	if (child_pid == -1)
+	if (child_pid == 0)
 	{
-		perror("fork failed");
-		free(path);
-	}
-		if (execve(path, argv, NULL) == -1)
+		path = _getpath(argv[0]);
+		if (path == NULL)
 		{
-			free(path);
-			perror("Error command not found");
+			perror("path null");
 			return (-1);
 		}
+		if (execve(path, argv, NULL))
+		{
+			perror("Error excuting command\n");
+			exit(EXIT_FAILURE);
+		}
+	}
+	else if (child_pid > 0)
+	{
+		waitpid(child_pid, &status, 0);
+	}
 	else
 	{
-		free(path);
-		waitpid(child_pid, &status, 0);
+		perror("failed to fork");
+		return (-1);
 	}
 	return (0);
 }
@@ -59,7 +60,7 @@ int _spliting(char *input_command, char **argv)
 	}
 	argv[num_of_args] = NULL;
 
-	if (num_of_args >= LIM_ARGS - 1)
+	if (num_of_args == 0)
 		return (-1);
 
 	return (num_of_args);
@@ -74,10 +75,10 @@ int _spliting(char *input_command, char **argv)
 
 int main(int argc, char *argv[], char *envp[])
 {
-	size_t var = 0;
+	size_t var;
 	ssize_t get_command;
 	char *command;
-	int tokens;
+	int no_of_argument;
 	(void)argc;
 	(void)envp;
 
@@ -85,31 +86,31 @@ int main(int argc, char *argv[], char *envp[])
 	{
 		write(1, "$ ", 2);
 		command = NULL;
+		var = 0;
 		get_command = getline(&command, &var, stdin);
 		if (get_command == -1)
 		{
-		free(command);
-		perror("exiting the shell\n");
-		return (1);
+			free(command);
+			perror("exiting the shell\n");
+			return (1);
 		}
-
 		if (_strcmp(command, "exit\n") == 0)
 		{
 			write(1, "Exiting the shell...\n", 22);
 			free(command);
 			break;
 		}
-	tokens = _spliting(command, argv);
-	if (tokens != -1)
+	no_of_argument = _spliting(command, argv);
+
+	if (no_of_argument != -1)
 	{
 		if (exec_command(argv) == -1)
 		{
-		perror("execution failed");
-		free(command);
-		exit(EXIT_FAILURE);
+			perror("Excution failed check exec_command");
+			free(command);
+			exit(EXIT_FAILURE);
 		}
 	}
-
 	free(command);
 	}
 	return (0);

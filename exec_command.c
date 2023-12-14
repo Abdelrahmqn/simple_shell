@@ -2,8 +2,9 @@
 /**
  * exec_command - Executes the command received as input.
  *
- *
- * @argv: The argument vector containing the command and its arguments.
+ * @cmd: the command line.
+ * @argv: argument vector.
+ * @envp: environment..
  *
  * Return: 0 on successful execution, -1 on failure.
  */
