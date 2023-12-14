@@ -14,7 +14,6 @@ int exec_command(char **cmd, char **argv, char **envp)
 	pid_t child_pid;
 	int status;
 	char *path;
-	(void)argv;
 
 	child_pid = fork();
 	if (child_pid == -1)
@@ -28,6 +27,7 @@ int exec_command(char **cmd, char **argv, char **envp)
 		if (path == NULL)
 		{
 			perror(argv[0]);
+			
 			exit(EXIT_FAILURE);
 		}
 			if (execve(path, cmd, envp) == -1)
