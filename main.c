@@ -1,6 +1,5 @@
 #include "main.h"
 
-
 /**
  * main - Entry point for the shell program.
  * @argc: Number of arguments passed to program.
@@ -8,7 +7,6 @@
  * @envp: Array of strings containing environment variables.
  * Return: 0 on successful execution, -1 on failure.
  */
-
 int main(int argc, char **argv, char **envp)
 {
 	int retour_stat = 0;
@@ -33,15 +31,8 @@ int main(int argc, char **argv, char **envp)
 	if (cmd == NULL)
 		continue;
 
-
 	retour_stat = exec_command(cmd, argv, envp);
-<<<<<<< HEAD
-
-	_free3(cmd);
-=======
->>>>>>> 9ede729 (fix the issues)
-
-	_free3(cmd);
+	_free2(cmd);
 	}
 	return (0);
 }

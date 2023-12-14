@@ -2,25 +2,25 @@
 /**
  * exec_command - Executes the command received as input.
  *
-<<<<<<< HEAD
- * @cmd: comad line
-=======
- * @cmd: command line args.
- * @envp: environment variables.
->>>>>>> 9ede729 (fix the issues)
+ * @cmd: commmand line.
+ * @envp: the environment variable.
  * @argv: The argument vector containing the command and its arguments.
- * @envp: environ variable
+ *
  * Return: 0 on successful execution, -1 on failure.
  */
 int exec_command(char **cmd, char **argv, char **envp)
 {
+
 	pid_t child_pid;
-	int status, char *path, (void)argv;
+	int status;
+	char *path;
+	(void)argv;
 
 	child_pid = fork();
 	if (child_pid == -1)
 	{
-		perror("Failed to fork"), return (-1);
+		perror("Failed to fork");
+		return (-1);
 	}
 	if (child_pid == 0)
 	{
@@ -40,17 +40,13 @@ int exec_command(char **cmd, char **argv, char **envp)
 	{
 		waitpid(child_pid, &status, 0);
 		if (WEXITSTATUS(status))
+		{
 			return (WEXITSTATUS(status));
-<<<<<<< HEAD
-	}
-	return (-1);
-=======
 		}
 			else
 			{
 				return (-1);
 			}
-		}
-return (-1);
->>>>>>> 9ede729 (fix the issues)
+	}
+	return (-1);
 }
