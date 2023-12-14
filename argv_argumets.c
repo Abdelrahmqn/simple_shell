@@ -14,7 +14,7 @@ char **_splitting(char *line)
 	if (line == NULL)
 	return (NULL);
 
-	line_dup = strdup(line);
+	line_dup = _strdup(line);
 	token = strtok(line_dup, DELIM);
 	if (token == NULL)
 	{
@@ -39,7 +39,7 @@ char **_splitting(char *line)
 	token = strtok(line, DELIM);
 	while (token != NULL && num_args < LIM_ARGS - 1)
 	{
-		line_command[i] = strdup(token);
+		line_command[i] = _strdup(token);
 		token = strtok(NULL, DELIM);
 		i++;
 	}

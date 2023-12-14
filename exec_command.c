@@ -2,7 +2,12 @@
 /**
  * exec_command - Executes the command received as input.
  *
+<<<<<<< HEAD
  * @cmd: comad line
+=======
+ * @cmd: command line args.
+ * @envp: environment variables.
+>>>>>>> 9ede729 (fix the issues)
  * @argv: The argument vector containing the command and its arguments.
  * @envp: environ variable
  * Return: 0 on successful execution, -1 on failure.
@@ -36,6 +41,16 @@ int exec_command(char **cmd, char **argv, char **envp)
 		waitpid(child_pid, &status, 0);
 		if (WEXITSTATUS(status))
 			return (WEXITSTATUS(status));
+<<<<<<< HEAD
 	}
 	return (-1);
+=======
+		}
+			else
+			{
+				return (-1);
+			}
+		}
+return (-1);
+>>>>>>> 9ede729 (fix the issues)
 }

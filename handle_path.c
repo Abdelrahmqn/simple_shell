@@ -54,9 +54,9 @@ token = strtok(path, ":");
 			return (NULL);
 		}
 
-		strcpy(full_command, token);
-		strcat(full_command, "/");
-		strcat(full_command, command);
+		_strcpy(full_command, token);
+		_strcat(full_command, "/");
+		_strcat(full_command, command);
 
 		if (stat(full_command, &status) == 0)
 			return (full_command);

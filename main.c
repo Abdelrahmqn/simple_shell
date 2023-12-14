@@ -35,9 +35,13 @@ int main(int argc, char **argv, char **envp)
 
 
 	retour_stat = exec_command(cmd, argv, envp);
+<<<<<<< HEAD
 
 	_free3(cmd);
+=======
+>>>>>>> 9ede729 (fix the issues)
 
+	_free3(cmd);
 	}
 	return (0);
 }
