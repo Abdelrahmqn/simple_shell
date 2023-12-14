@@ -14,7 +14,8 @@ int len = 0;
 	{
 		len++;
 	}
-	while (dest[i] != '\0')
+
+	while (src[i] != '\0')
 	{
 	dest[len + i] = src[i];
 	i++;
