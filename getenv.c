@@ -1,27 +1,24 @@
-#include"main.h"
+#include "main.h"
 /**
- * _getenv - the get environment functions.
+ * _getenv - function that reads path environment.
  *
- * @environ_var: the name of the environment.
+ * @name: write the name of the environment variables.
  *
- * Return: On success: the dest. On failure: NULL.
- */
-char *_getenv(const char *environ_var)
-{
-	int index = 0;
-	char *token;
+ * return: NULL, if it fails return (-1).
+*/
+char *_getenv(const char *name) {
+    char **environvar;
+    int name_len = _strlen(name);
 
-	while (environ[index])
+    for (environvar = environ; *environvar != NULL; environvar++)
 	{
-		token = strtok(environ[index], "=");
-		if (strcmp(environ_var, token) == 0)
-			return (strtok(NULL, "\n"));
-		index++;
-	}
-	return (NULL);
+		if (_strncmp(name, *environvar, name_len) == 0)
+		{
+		return (*environvar + name_len + 1);
+		}
+    }
+    return (NULL);
 }
-
-
 /**
  * full_path - function that call getenv and return full path
  *
@@ -34,18 +31,17 @@ char *full_path(char *command)
 	char *path = _getenv("PATH");
 	char *token;
 	char *full_command = NULL;
-	int i = 0;
 	struct stat status;
+	int i = 0;
 
-	while (command[i])
+		while (command[i])
 	{
 		if (command[i] == '/')
 		return (command);
 		i++;
 	}
-token = strtok(path, ":");
-
-	while (token)
+	token = strtok(path, ":");
+	while (token != NULL)
 	{
 		full_command = malloc(strlen(command) + strlen(token) + 2);
 		if (full_command == NULL)
@@ -55,11 +51,13 @@ token = strtok(path, ":");
 		}
 
 		_strcpy(full_command, token);
-		strcat(full_command, "/");
-		strcat(full_command, command);
+		_strcat(full_command, "/");
+		_strcat(full_command, command);
 
 		if (stat(full_command, &status) == 0)
-			return (full_command);
+		{
+                return (full_command);
+        }
 
 		free(full_command);
 		token = strtok(NULL, ":");
