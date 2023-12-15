@@ -1,23 +1,26 @@
 #include "main.h"
 /**
- * _getenv - function that reads path environment.
+ * _getenv - calling environ pointer
  *
- * @name: write the name of the environment variables.
+ * @name: the name of the variables owner.
  *
- * return: NULL, if it fails return (-1).
-*/
-char *_getenv(const char *name) {
-    char **environvar;
-    int name_len = _strlen(name);
+ * Return: NULL at the end of the function.
+ */
 
-    for (environvar = environ; *environvar != NULL; environvar++)
+char *_getenv(const char *name)
+{
+	char **environ_var;
+	int name_len = _strlen(name);
+
+	for (environ_var = environ; *environ_var != NULL;)
 	{
-		if (_strncmp(name, *environvar, name_len) == 0)
+		environ_var++;
+		if (_strncmp(name, *environ_var, name_len) == 0)
 		{
-		return (*environvar + name_len + 1);
+			return (*environ_var + name_len + 1);
 		}
-    }
-    return (NULL);
+	}
+	return (NULL);
 }
 /**
  * full_path - function that call getenv and return full path
@@ -56,8 +59,8 @@ char *full_path(char *command)
 
 		if (stat(full_command, &status) == 0)
 		{
-                return (full_command);
-        }
+			return (full_command);
+		}
 
 		free(full_command);
 		token = strtok(NULL, ":");

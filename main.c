@@ -26,6 +26,11 @@ int main(int argc, char **argv, char **envp)
 		{
 			return (retour_stat);
 		}
+		if (_strncmp(line, "exit\n", 5) == 0 || _strncmp(line, "exit", 4) == 0)
+		{
+			free(line);
+			exit(retour_stat);
+		}
 	cmd = _splitting(line);
 
 	if (cmd == NULL)
