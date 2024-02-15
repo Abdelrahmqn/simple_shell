@@ -1,6 +1,19 @@
 #include "main.h"
 
 /**
+ * env - to print environment.
+ */
+void env(void)
+{
+	char **envrmnt;
+
+	for (envrmnt = environ; *envrmnt; envrmnt++)
+	{
+		printf("%s\n", *envrmnt);
+	}
+}
+
+/**
  * main - Entry point for the shell program.
  * @argc: Number of arguments passed to program.
  * @argv: Array of strings containing arguments.
@@ -40,5 +53,6 @@ int main(int argc, char **argv, char **envp)
 
 	_free3(cmd);
 	}
+	env();
 	return (0);
 }

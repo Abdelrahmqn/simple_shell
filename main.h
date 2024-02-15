@@ -20,6 +20,7 @@ char *_readinput(void);
 
 char **_splitting(char *line);
 
+void env(void);
 void _free1(char *variable);
 void _free2(char **variable);
 void _free3(char **variable3);
